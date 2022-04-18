@@ -1,0 +1,4 @@
+[".local/lib/antigen.zsh"]
+type = "file"
+url = "http://git.io/antigen"
+refreshPeriod = "24h"

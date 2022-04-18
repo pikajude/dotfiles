@@ -1,0 +1,111 @@
+# vi: set ft=sh
+
+typeset -U path cdpath fpath manpath
+
+for profile in ${NIX_PROFILES}; do
+  fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+done
+
+fpath+=(/usr/share/zsh/vendor-completions)
+
+autoload -U compinit && compinit
+
+# history
+HISTSIZE="10000"
+SAVEHIST="10000"
+
+HISTFILE="$HOME/.zsh_history"
+
+setopt HIST_FCNTL_LOCK
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+unsetopt HIST_EXPIRE_DUPS_FIRST
+setopt SHARE_HISTORY
+unsetopt EXTENDED_HISTORY
+
+# direnv
+if hash direnv 2>/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+__ZHOSTCOLOR=$(python3 ~/.local/lib/prompt.py)
+
+promptcmd() {
+  PROMPT="%F{$__ZHOSTCOLOR}%m%f"
+  PROMPT+=' %n %F{blue}%3~%f %(!.%F{red}#.%(?.$.%F{magenta}%?))%f '
+  if [ -n "$DIRENV_DIR" ]; then
+    PROMPT="%F{13}env%f $PROMPT"
+  elif [ -n "$IN_NIX_SHELL" ]; then
+    PROMPT="%F{13}nix-shell%f $PROMPT"
+  fi
+}
+
+precmd_functions+=(promptcmd)
+
+autoload -U colors && colors
+unset RPROMPT RPS1
+setopt prompt_sp
+
+autoload -Uz run-help
+
+setopt autolist automenu nobashautolist nolistambiguous
+unsetopt beep correct_all
+
+# case-insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# ssh hosts completion
+zstyle ':completion:*:ssh:*' hosts
+
+c() {
+  cd $HOME/.code/$1
+}
+
+compdef "_files -W \"$HOME/.code\"" c
+compdef hub=git
+
+autoload bashcompinit
+bashcompinit
+
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^F' history-incremental-pattern-search-forward
+bindkey '^E' end-of-line
+bindkey '^A' beginning-of-line
+bindkey '^B' backward-word
+bindkey '^N' forward-word
+
+path=($path $HOME/.local/bin)
+
+export NIX_PATH="$NIX_PATH:$HOME/.nix-defexpr/channels"
+
+# Aliases
+alias ga='git add'
+alias gb='git branch'
+alias gc='git commit'
+alias gco='git checkout'
+alias gd='git diff'
+alias gff='git pull --ff-only'
+alias git='hub'
+alias gl='git log --pretty=format:"%C(yellow)%h%C(reset) %s %C(magenta bold)%an%C(reset) %C(cyan)%ar%C(reset)" --graph'
+alias gp='git push'
+alias gpr='git pull --rebase origin master'
+alias gr='git remote'
+alias grep='grep --color'
+alias gs='git status'
+alias gu='git pull'
+alias h='home-manager'
+alias ls='ls --color'
+alias nb='nix build --no-link'
+alias nix-build='nix-build --no-out-link'
+alias rg='rg --hidden'
+alias s='nix-shell'
+alias tf='terraform'
+
+# antigen plugins
+. ~/.local/lib/antigen.zsh
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle chisui/zsh-nix-shell
+
+antigen apply
