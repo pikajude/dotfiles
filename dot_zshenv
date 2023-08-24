@@ -1,0 +1,11 @@
+# vi: set ft=sh
+
+if [ -z "$__SESSION_VARS_SOURCED" ]; then
+  export __SESSION_VARS_SOURCED=1
+  export EDITOR="code --wait"
+  export LSCOLORS="dxfxgxexbxchcxBxBxdhDh"
+  export LS_COLORS="di=33:ln=35:so=36:pi=34:ex=31:bd=32;47:cd=32:su=1;31:sg=1;31:tw=33;47:ow=1;33;47:"
+fi
+
+[ -e "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+[ -e "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
