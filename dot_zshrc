@@ -104,6 +104,7 @@ alias tf='terraform'
 # antigen plugins
 . ~/.local/lib/antigen.zsh
 
+export ANTIGEN_LOG=~/.local/lib/antigen.log
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle chisui/zsh-nix-shell
