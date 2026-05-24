@@ -2,7 +2,7 @@
 
 if [ -z "$__SESSION_VARS_SOURCED" ]; then
   export __SESSION_VARS_SOURCED=1
-  export EDITOR="code --wait"
+  export EDITOR="vim"
   export LSCOLORS="dxfxgxexbxchcxBxBxdhDh"
   export LS_COLORS="di=33:ln=35:so=36:pi=34:ex=31:bd=32;47:cd=32:su=1;31:sg=1;31:tw=33;47:ow=1;33;47:"
 fi

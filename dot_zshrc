@@ -99,6 +99,8 @@ alias rg='rg --hidden'
 alias s='nix-shell'
 alias tf='terraform'
 
+alias xclip='xclip -sel clipboard'
+
 if hash hub >&/dev/null; then
   alias git='hub'
 fi
