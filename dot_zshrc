@@ -61,8 +61,7 @@ c() {
   cd $HOME/code/$1
 }
 
-compdef "_files -W \"$HOME/code\"" c
-compdef hub=git
+compdef "_files -W $HOME/code" c
 
 autoload bashcompinit
 bashcompinit
