@@ -58,10 +58,10 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:
 zstyle ':completion:*:ssh:*' hosts
 
 c() {
-  cd $HOME/.code/$1
+  cd $HOME/code/$1
 }
 
-compdef "_files -W \"$HOME/.code\"" c
+compdef "_files -W \"$HOME/code\"" c
 compdef hub=git
 
 autoload bashcompinit
